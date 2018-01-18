@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	<title>robot</title>
+	<style>
+		*{margin: 0;padding: 0;background-color: #eee;}
+		h2{
+			color: rgb(55, 85, 191);
+			font-family: sans-serif;
+			margin: 20px auto;
+			position: relative;left: 45%;
+
+		}
+
+		#box{
+			width: 700px;height: 400px;background-color: rgb(145, 145, 145);margin: 0 auto;overflow:  auto;
+			font-size: 1.4em;margin-top: 20px;border-radius: 10px;box-shadow: 3px 3px 5px rgb(26, 23, 23);}
+
+		#container{border-radius: 10px;width: 230px;height: 30px;margin:30px 500px;padding: 10px;border:0;}
+
+		#btn{width: auto;height: auto;text-align: center;padding: 2px;padding-bottom: 1px;margin-left: 20px;border-radius: 2px;
+			font-family: fantasy;font-size: medium;box-shadow: 2px 2px 2px rgb(26, 23, 23);}
+
+		#btn:hover{
+			cursor: pointer;opacity: 0.8;
+		}
+
+		#robot{
+			background-color: inherit;color: #000;
+			padding-left: 4px;padding-bottom: 4px;
+			border: 1px solid rgb(65, 64, 107);height: 20px;
+
+		}
+		#robot:focus{
+			box-shadow: -2px -2px 2px rgb(26, 23, 23) inset;
+		}
+
+		#answer{
+			background-color: #fff;border-radius: 5px;
+			width: 420px;text-align: left;
+			margin-top: 5px;margin-left: 15px;padding-left: 10px;}
+
+		#ask{
+			background-color: #5154a7;color: #fff;opacity: 0.9;border-radius: 5px;
+			width: 320px;text-align: right;
+			margin-top: 5px;margin-left: 345px;padding: auto 5px;padding-right: 10px}
+		</style>
+
+		<script type="text/javascript" src="jquery-1.12.3.min.js"></script>
+		<script type="text/javascript">
+
+			$(document).ready(function(){
+
+				$("#robot").on("keydown",function(e){
+					e = e || window.event;
+					var code = e.which || e.keyCode;
+					if(code == 13){
+							$("#btn").trigger("click");
+							$("#robot").val("")="";
+					}
+			});
+
+
+				$("#btn").click(function(){
+
+				  var text=$("#robot").val().toString();
+
+				  $.ajax({
+						url:'http://www.tuling123.com/openapi/api?key=24a8c1d25410abe212c221ed0708e18e&info='+text,
+
+						success:function(data){
+
+							$('#box').append($('<div id="ask"></div>').text(text));
+							$('#box').append($('<div id="answer"></div>').text(data.text));
+							$('#box').append($('<div id="answer"></div>').text(data.url));
+
+						},
+						error:function(){
+							alert(false);
+						}
+					});
+
+				});
+			});
+
+			var text="";
+			function gunping()
+			{
+			var box1=document.getElementById("box");
+			if(text!=box1.innerHTML)
+			{
+			  text=box1.innerHTML;
+			  box1.scrollTop=box1.scrollHeight;
+			}
+			setTimeout("gunping()",0);
+			}
+			</script>
+</head>
+
+<body onload="gunping()">
+	<h2>小徐专业陪聊</h2>
+
+	<div id="box">
+		<div id="ask"></div>
+		<div id="answer"></div>
+	</div>
+	<div id="container">
+		<input type="text" id="robot"/>
+		<input type="button" value="发送消息" id="btn"/>
+
+	</div>
+</body>
+</html>
